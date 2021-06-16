@@ -4,33 +4,22 @@ body {
     justify-content: center;
     overflow: hidden;
 }
-.Button {
-    background: #cad2c5;
-    display: flex;
-    border: 1px solid rgba(0,0,0,0.05);
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-    width: 25%;
-    font-size: 24px;
-    color: rgba(0, 0, 0, 0.5);
-    height: 20%;
-    min-width: 25%;
-}
-
-.Button[data-size="2"] {
-    height: 40%;
-}
-
-.Button[data-value="null"] {
-    pointer-events: none;
-}
-
-.Button:hover {
-    background: #d7ddd3;
-    cursor: default;
-}
-.Display {
+button {
+    width: 70px;
+    height: 40px;
+    font-size: 15px;
+    background-color: #eeeeee;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    margin: 5px;
+    outline: none;
+  }
+  
+  button:hover {
+    box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.1);
+    background-color: #ccc;
+  }
+  .Display {
     padding-right: 20px;
     display: flex;
     justify-content: flex-end;

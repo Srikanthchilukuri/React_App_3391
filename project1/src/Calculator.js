@@ -1,59 +1,67 @@
 import React, { Component } from 'react';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 import './Calculator.css';
+
 
 class Calculator extends Component {
     constructor() {
         super();
-        this.state = { data: '' }
+        this.state = { data: '', resultDisplayed: false }
     }
 
     calculate = () => {
         try {
             const result = eval(this.state.data);
-            this.setState({ data: result });
+            this.setState({ data: result, resultDisplayed: true });
         } catch (e) {
-            this.setState({ data: 'error' });
+            this.setState({ data: 'error', resultDisplayed: true });
         }
     }
-
-    handleClick = e => {
-        const value = e.target.getAttribute('data-value');
-        switch (value) {
-            case 'clear':
+    handleclick = (key) => {
+        switch (key) {
+            case 'Escape':
                 this.setState({ data: '' });
                 break;
-            case 'equal':
+            case 'Enter':
                 this.calculate();
                 break;
             default:
-                this.setState({ data: this.state.data + value });
+                if (this.state.resultDisplayed) {
+                    this.setState({ data: key });
+                    this.setState({ resultDisplayed: false });
+                } else {
+                    this.setState({ data: this.state.data + key });
+                }
+                break;
         }
     }
     render() {
         return (
             <div className="Calculator">
+                <KeyboardEventHandler
+                    handleKeys={['Enter', 'Escape', '.', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '/', '+', '-', '*']}
+                    onKeyEvent={(key, e) => {
+                        this.handleclick(key);
+                    }} />
                 <Display data={this.state.data} />
                 <Keypad>
-                    <Button onClick={this.handleClick} label="C" value="clear" />
-                    <Button onClick={this.handleClick} label="7" value="7" />
-                    <Button onClick={this.handleClick} label="4" value="4" />
-                    <Button onClick={this.handleClick} label="1" value="1" />
-                    <Button onClick={this.handleClick} label="0" value="0" />
-
-                    <Button onClick={this.handleClick} label="/" value="/" />
-                    <Button onClick={this.handleClick} label="8" value="8" />
-                    <Button onClick={this.handleClick} label="5" value="5" />
-                    <Button onClick={this.handleClick} label="2" value="2" />
-                    <Button onClick={this.handleClick} label="." value="." />
-
-                    <Button onClick={this.handleClick} label="X" value="*" />
-                    <Button onClick={this.handleClick} label="9" value="9" />
-                    <Button onClick={this.handleClick} label="6" value="6" />
-                    <Button onClick={this.handleClick} label="" value="null" />
-
-                    <Button onClick={this.handleClick} label="-" value="-" />
-                    <Button onClick={this.handleClick} label="+" size="2" value="+" />
-                    <Button onClick={this.handleClick} label="=" size="2" value="equal" />
+                    <button onClick={() => { this.handleclick('Escape') }}>CE</button>
+                    <button onClick={() => { this.handleclick('7') }} >7</button>
+                    <button onClick={() => { this.handleclick('4') }} >4</button>
+                    <button onClick={() => { this.handleclick('1') }} >1</button>
+                    <button onClick={() => { this.handleclick('0') }} >0</button>
+                    <button onClick={() => { this.handleclick('8') }} >8</button>
+                    <button onClick={() => { this.handleclick('5') }} >5</button>
+                    <button onClick={() => { this.handleclick('2') }} >2</button>
+                    <button onClick={() => { this.handleclick('.') }} >.</button>
+                    <button onClick={() => { this.handleclick('9') }} >9</button>
+                    <button onClick={() => { this.handleclick('6') }} >6</button>
+                    <button onClick={() => { this.handleclick('3') }} >3</button>
+                    <button onClick={() => { this.handleclick('+') }} >+</button>
+                    <button onClick={() => { this.handleclick('*') }} >*</button>
+                    <button onClick={() => { this.handleclick('-') }} >-</button>
+                    <button onClick={() => { this.handleclick('/') }} >/</button>
+                    <button onClick={() => { this.handleclick('Enter') }} >=</button>
                 </Keypad>
             </div>
         );
@@ -61,6 +69,5 @@ class Calculator extends Component {
 }
 
 const Display = props => <div className="Display"> {props.data}</div>;
-const Button = props => <div className="Button" onClick={props.onClick} data-size={props.size} data-value={props.value}>{props.value}</div>;
 const Keypad = props => <div className="Keypad"> {props.children} </div>;
 export default Calculator;
